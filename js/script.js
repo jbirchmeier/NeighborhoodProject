@@ -26,9 +26,9 @@ function loadData() {
     var nytimesUrl = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?q=' + $city + '&sort=newest&api-key=63f03140055613a8d89b96a09bdddffd:19:64206113';
 
     $.ajax({
-      'type': 'GET',
-      'url': nytimesUrl,
-      'success': function(data, textStats, XMLHttpRequest) {
+        'type': 'GET',
+        'url': nytimesUrl,
+        'success': function(data, textStats, XMLHttpRequest) {
         articles = data.response.docs
             for(var i=0; i<articles.length; i++){
                 var article = articles[i];
@@ -41,6 +41,35 @@ function loadData() {
         
     }).fail(function(){
             $('#nytimes-articles').text('Uh oh. Something got confused.');
+        });
+
+        var wikiURL = 'https://en.wikipedia.org/w/api.php'
+
+        $.ajax({
+            url: wikiURL,
+            data: {
+                action: 'query',
+                meta: 'tokens',
+                format: 'json',
+                origin: 'https://www.mediawiki.org'
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            dataType: 'json'
+        }).done(function(data, textStats, XMLHttpRequest) {
+        // articles = data.response.docs
+        //     for(var i=0; i<articles.length; i++){
+        //         var article = articles[i];
+        //         var headline = article.headline.main;
+        //         var p = article.lead_paragraph;
+        //         var url = article.web_url;
+        //         $nytElem.append('<li>'+'<a href="'+url+'">'+headline+'</a></li>');
+        
+        //     }
+                console.log(data);
+        }).fail(function(){
+            $('#wikipedia-links').text('Uh oh. Something got confused.');
         });
 
     return false;
