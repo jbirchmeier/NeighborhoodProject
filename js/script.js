@@ -43,33 +43,23 @@ function loadData() {
             $('#nytimes-articles').text('Uh oh. Something got confused.');
         });
 
-        var wikiURL = 'https://en.wikipedia.org/w/api.php'
+
+        var wikiURL = 'https://en.wikipedia.org/w/api.php?action=opensearch&search='+$city+'&format=json&callback=wikiCallback';
 
         $.ajax({
             url: wikiURL,
-            data: {
-                action: 'query',
-                meta: 'tokens',
-                format: 'json',
-                origin: 'https://www.mediawiki.org'
-            },
-            xhrFields: {
-                withCredentials: true
-            },
-            dataType: 'json'
-        }).done(function(data, textStats, XMLHttpRequest) {
-        // articles = data.response.docs
-        //     for(var i=0; i<articles.length; i++){
-        //         var article = articles[i];
-        //         var headline = article.headline.main;
-        //         var p = article.lead_paragraph;
-        //         var url = article.web_url;
-        //         $nytElem.append('<li>'+'<a href="'+url+'">'+headline+'</a></li>');
-        
-        //     }
-                console.log(data);
+            dataType: 'jsonp',
+            success: function(response) {
+                var articles = response[1];
+                for(var i=0; i<articles.length; i++){
+                    var article = articles[i];
+                    var url = 'https://en.wikipedia.org/'+article;
+                    $wikiElem.append('<li>'+'<a href="'+url+'">'+article+'</a></li>');
+            
+            }
+        }
         }).fail(function(){
-            $('#wikipedia-links').text('Uh oh. Something got confused.');
+            $('wikiElem').text('Uh oh. Something got confused.');
         });
 
     return false;
