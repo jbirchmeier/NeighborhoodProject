@@ -2,29 +2,23 @@
 <html>
 <head>
 	 <script src="https://maps.googleapis.com/maps/api/js"></script>
-	 <script type='text/javascript' src='knockout-3.3.0.js'></script>
-	 <script>
-		function initialize() {
-			var mapCanvas = document.getElementById('map');
-       		var mapOptions = {
-         		center: new google.maps.LatLng(41.924707, -87.700333),
-          		zoom: 15,
-          		mapTypeId: google.maps.MapTypeId.ROADMAP
-        		}
-        	var map = new google.maps.Map(mapCanvas, mapOptions)
-      	}
-      	google.maps.event.addDomListener(window, 'load', initialize);
-	// </script>
+	 <script type='text/javascript' src='knockout/dist/knockout.js'></script> 
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type='text/javascript' src='js/viewmodel.js'></script>
 	<style>
 		#map {
 	 		width: 500px;
 	 		height: 500px;
-
 	 	}
 	 	</style>
 	</head>
 	<body>
 		<h1>Hellloooooo Logan Square</h1>
+		<ul data-bind="foreach: places">
+			<li>
+				<p data-bind="text: name"></p> 
+				<p data-bind="text: type"></p> 
+			</li>
 		<div id='map'></div>
 	</body>
 
