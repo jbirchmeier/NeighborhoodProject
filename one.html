@@ -17,8 +17,10 @@
 		<h1>Hellloooooo Logan Square</h1>
 		<ul data-bind="foreach: places">
 			<li>
-				<p data-bind="text: name"></p> 
-				<p data-bind="text: type"></p> 
+				<p data-bind="text: name" class='name'></p> 
+				<p data-bind="text: type" class='type'></p> 
+				<p data-bind="text: url" class='url'></p>
+				<p data-bind="text: summary" class='summary'></p>
 			</li>
 		<div id='map'></div>
 	</body>
