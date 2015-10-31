@@ -1,0 +1,28 @@
+
+body {
+	max-width: 90%;
+}
+
+.list {
+	float: left;
+	display: block;
+	width: 30em;
+}
+
+ul {
+	list-style-type: none;
+	display: block;
+}
+button {
+	width: 20em;
+	text-align: left;
+}
+
+#details {
+	display: none;
+}
+#map {
+	width: 500px;
+	height: 500px;
+}
+

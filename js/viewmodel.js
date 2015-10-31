@@ -1,24 +1,41 @@
-
-
-//create empty data array, apply Knockout.js
-var data = [];
-var viewModel = {
-	places: ko.observableArray(data)
-};
-$(document).ready(function() {
-	ko.applyBindings(viewModel);
-});
-
+//create empty array for storing neighborhood spots
 var myPlaces = new Array();
 
-//load JSON neighborhood data from neighborhood.json
+//load JSON neighborhood data from neighborhood.json in to empty myPlaces array
 $.getJSON("js/neighborhood.json", function(data) { 
-	viewModel.places(data);
+	viewModel.myPlaces(data);
 	$.each(data, function(i) {
 		myPlaces.push(data[i]);
 	});
 	console.log(data);
 }).fail(function() {console.log('error')})
+
+//create empty data array, apply Knockout.js
+var data = [];
+var viewModel = {
+	myPlaces: ko.observableArray(data),
+	query: ko.observable(''),
+	buttonClick: function() {
+		console.log('clicked');
+		var details = document.getElementById('details');
+		details.style.display='block';
+	},
+	search: function(value) {
+		viewModel.myPlaces.removeAll();
+
+		for(var x in myPlaces) {
+			if(myPlaces[x].name.toLowerCase().indexOf(value.toLowerCase()) >= 0){
+				viewModel.myPlaces.push(myPlaces[x]);
+			}
+		}
+	}
+};
+
+$(document).ready(function() {
+	ko.applyBindings(viewModel);
+});
+viewModel.query.subscribe(viewModel.search);
+
 
 var marker = [];
 var content = [];
@@ -34,6 +51,7 @@ function initialize() {
 		}
 	var map = new google.maps.Map(mapCanvas, mapOptions)
 
+//loop through myPlaces array and place a marker at each lat/long
 	for (i=0; i<myPlaces.length; i++) {
 		marker[i]= new google.maps.Marker({
 			position: {lat: myPlaces[i].lat, lng:myPlaces[i].long},
@@ -41,9 +59,9 @@ function initialize() {
 			title: myPlaces[i].name,
 			animation: google.maps.Animation.DROP
 		});
-		marker[i].addListener('click', toggleBounce);
+	google.maps.event.addListener(marker, 'click', toggleBounce);	
 	}
-
+	
 //bounce markers on click - need to fix!
 	function toggleBounce() {
 		if(marker.getAnimation() !== null) {
@@ -56,3 +74,6 @@ function initialize() {
 }
 //run initialize function for google map on window load
 google.maps.event.addDomListener(window, 'load', initialize);
+
+
+

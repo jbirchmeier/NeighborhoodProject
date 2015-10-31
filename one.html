@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-	 <script src="https://maps.googleapis.com/maps/api/js"></script>
-	 <script type='text/javascript' src='knockout/dist/knockout.js'></script> 
-	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<link href="css/style.css" rel="stylesheet" type="text/css">
+	<script src="https://maps.googleapis.com/maps/api/js"></script>
+	<script type='text/javascript' src='knockout/dist/knockout.js'></script> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script type='text/javascript' src='js/viewmodel.js'></script>
-	<style>
-		#map {
-	 		width: 500px;
-	 		height: 500px;
-	 		float: right;
-	 	}
-	 	</style>
 	</head>
 	<body>
 		<h1>Hellloooooo Logan Square</h1>
-		<ul data-bind="foreach: places">
-			<li>
-				<p data-bind="text: name" class='name'></p> 
-				<p data-bind="text: type" class='type'></p> 
-				<p data-bind="text: url" class='url'></p>
-				<p data-bind="text: summary" class='summary'></p>
-			</li>
+		<div class='list'>
+			<input placeholder='search' type='search' data-bind="value: query, valueUpdate: 'keyup'" autocomplete='off'>
+			<ul data-bind="foreach: myPlaces">
+				<li id='button'>
+					<button data-bind="click: $root.buttonClick" name='button' type='button'>
+						<p data-bind="text: name" class='name'>
+						<p data-bind="text: type" id='details'></p> 
+						<p data-bind="text: url" id='details'></p>
+						<p data-bind="text: summary" id='details'></p>
+					</button> 
+				</li>
+			</ul>
+		</div>
 		<div id='map'></div>
 	</body>
 
