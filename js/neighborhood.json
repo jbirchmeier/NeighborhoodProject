@@ -1,6 +1,6 @@
 [{
 	"name": "Wolfbait & B-Girls",
-	"type": "shopping",
+	"type": "Shopping",
 	"lat": 41.927880,
 	"long": -87.706296,
 	"summary": " From vintage-inspired pencil sharpeners to floral A-line skirts, there’s more than enough material to rummage for hours.",
@@ -25,7 +25,7 @@
 },
 {
 	"name": "The Logan Theater",
-	"type": "entertainment",
+	"type": "Entertainment",
 	"lat":41.929969,
 	"long": -87.708925,
 	"summary":"The Logan Theatre opened in 1915 as the Paramount Theatre, a single-screen cinema. In 1922, it was taken over by the Vaselopolis family, as several waves of new ethnic groups reshaped Logan Square as their home, the Logan Theatre remained a family-owned business committed to serving the diverse families of the community.",
@@ -33,7 +33,7 @@
 },
 {
 	"name": "Logan Arcade",
-	"type": "entertainment",
+	"type": "Entertainment",
 	"lat": 41.925396,
 	"long": -87.688260,
 	"summary": " Inside, you'll find a fully stocked bar and a blinking, beeping menagerie of lovingly restored arcade games.",
@@ -49,7 +49,7 @@
 },
 {
 	"name": "Palmer Square Park",
-	"type": "entertainment",
+	"type": "Entertainment",
 	"lat": 41.921310,
 	"long": -87.704786,
 	"summary": "Named for the 15th Governor of Illinois, John McAuley Palmer, this seven-acre park located between Logan Square and Humboldt Park dates back to the creation of the boulevard system in the 1870s.",
