@@ -37,9 +37,8 @@ viewModel.query.subscribe(viewModel.search);
 
 
 
-var marker = [];
+
 var content = [];
-var infowindow = [];
 
 //create and set Google Map with marker
 function initialize() {
@@ -51,41 +50,44 @@ function initialize() {
 		}
 	var map = new google.maps.Map(mapCanvas, mapOptions)
 
-//loop through myPlaces array and place a marker at each lat/long
+//loop through myPlaces array and place a marker and infowindow at each lat/long
 	for (i=0; i<myPlaces.length; i++) {
-		marker = marker[i]
-		marker = new google.maps.Marker({
+		var marker = new google.maps.Marker({
 			position: {lat: myPlaces[i].lat, lng:myPlaces[i].long},
 			map: map,
 			title: myPlaces[i].name,
 			animation: google.maps.Animation.DROP
-		});
+		}); //end marker
 		google.maps.event.addListener(marker, 'click', toggleBounce);
-		google.maps.event.addListener(marker, 'click', function() {
-    	infowindow.open(map, this);
-  		}); //end listener
-
-//where does infowindow go?!
-		var infowindow = new google.maps.InfoWindow({
-    	content: '<div>'+ myPlaces[i].type+ '</div>' + '<div>'+ myPlaces[i].summary+ '</div>' + '<div>'+ myPlaces[i].url+ '</div>' 
-  		});
-
+		
+		content.push('<div>'+ myPlaces[i].type + '</div>' + '<div>'+ myPlaces[i].summary+ '</div>' + '<div><a href='+ myPlaces[i].url+ '>' + myPlaces[i].url + '</a></div>');
+		attachWindow(marker, content[i]);
 	} //end for loop
+} //end initialize
 
+//add infowindows
+function attachWindow(marker, contents) {
+  var infowindow = new google.maps.InfoWindow({
+    content: contents
+  });
 
-
+  marker.addListener('click', function() {
+    infowindow.open(marker.get('map'), marker);
+  });
+}
 
 //bounce markers on click 
-	function toggleBounce(marker) {
-		if(this.getAnimation() !== null) {
-			this.setAnimation(null);
-		} else {
-			this.setAnimation(google.maps.Animation.BOUNCE);
-		}
+function toggleBounce(marker) {
+	var self = this;
+	if(self.getAnimation() !== null) {
+		self.setAnimation(null);
+	} else {
+		self.setAnimation(google.maps.Animation.BOUNCE);
+		setTimeout(function(){self.setAnimation(null); }, 1500);
 	}
-
-
 }
+
+
 //run initialize function for google map on window load
 google.maps.event.addDomListener(window, 'load', initialize);
 
