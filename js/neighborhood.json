@@ -4,7 +4,8 @@
 	"lat": 41.927880,
 	"long": -87.706296,
 	"summary": " From vintage-inspired pencil sharpeners to floral A-line skirts, there’s more than enough material to rummage for hours.",
-	"url": "http://wolfbaitchicago.com/"
+	"url": "http://wolfbaitchicago.com/",
+	"venueid": "w4ba681e4f964a520285939e3"
 
 },
 {
@@ -13,7 +14,8 @@
 	"lat": 41.925053,
 	"long":-87.710989,
 	"summary": "Try the papas con chorizo Pambazo. Trust me. Cash only!", 
-	"url": ""
+	"url": "",
+	"venueid":"531a8b7f498e75a62172a105"
 },
 {
 	"name": "Owen & Engine",
@@ -21,7 +23,8 @@
 	"lat": 41.930692,
 	"long": -87.688105,
 	"summary": "The beer geeks behind the bar know their stuff, from the cask-conditioned ales to the Euro-heavy bottle list; and the way the kitchen is executing food, it deserves its own coat of arms.",
-	"url": "http://www.owenandengine.com/"
+	"url": "http://www.owenandengine.com/",
+	"venueid":"4c86edce56e0370400adaea3"
 },
 {
 	"name": "The Logan Theater",
@@ -29,7 +32,8 @@
 	"lat":41.929969,
 	"long": -87.708925,
 	"summary":"The Logan Theatre opened in 1915 as the Paramount Theatre, a single-screen cinema. In 1922, it was taken over by the Vaselopolis family, as several waves of new ethnic groups reshaped Logan Square as their home, the Logan Theatre remained a family-owned business committed to serving the diverse families of the community.",
-	"url": "http://www.thelogantheatre.com/"
+	"url": "http://www.thelogantheatre.com/",
+	"venueid":"4b4bdde3f964a52006aa26e3"
 },
 {
 	"name": "Logan Arcade",
@@ -37,7 +41,8 @@
 	"lat": 41.925396,
 	"long": -87.688260,
 	"summary": " Inside, you'll find a fully stocked bar and a blinking, beeping menagerie of lovingly restored arcade games.",
-	"url": "http://loganarcade.com/"
+	"url": "http://loganarcade.com/",
+	"venueid":"53015818498ee35b40b8892b"
 },
 {
 	"name": "The Burlington",
@@ -45,7 +50,8 @@
 	"lat": 41.924696,
 	"long": -87.713212,
 	"summary": "This Logan Square bar has everything you could ask for—just don’t ask for too much. The spare, dim room has plenty of hipster atmosphere (but no hipster snobbery); ample seating at the full bar; delicious beers on tap; and occasional DJ sets from local and touring musicians.",
-	"url": "http://www.theburlingtonbar.com/"
+	"url": "http://www.theburlingtonbar.com/",
+	"venueid":"4b12d1b2f964a520be8e23e3"
 },
 {
 	"name": "Palmer Square Park",
@@ -53,7 +59,8 @@
 	"lat": 41.921310,
 	"long": -87.704786,
 	"summary": "Named for the 15th Governor of Illinois, John McAuley Palmer, this seven-acre park located between Logan Square and Humboldt Park dates back to the creation of the boulevard system in the 1870s.",
-	"url": "http://www.chicagoparkdistrict.com/parks/palmer-square-park/"
+	"url": "http://www.chicagoparkdistrict.com/parks/palmer-square-park/",
+	"venueid":"4bb2879814cfd13a731415ab"
 }
 
 ]

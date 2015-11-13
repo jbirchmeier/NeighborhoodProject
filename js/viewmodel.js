@@ -10,36 +10,10 @@ $.getJSON("js/neighborhood.json", function(data) {
 	console.log(data);
 }).fail(function() {console.log('error')})
 
-//create empty data array, apply Knockout.js
-var data = [];
-var viewModel = {
-	myPlaces: ko.observableArray(data),
-	query: ko.observable(''),
-	buttonClick: function() {
-		console.log('clicked');
-		var details = document.getElementById('details');
-		details.style.display='block';
-	},
-	search: function(value) {
-		viewModel.myPlaces.removeAll();
-		for(var x in myPlaces) {
-			if(myPlaces[x].name.toLowerCase().indexOf(value.toLowerCase()) >= 0){
-				viewModel.myPlaces.push(myPlaces[x]);
-			}
-		}
-	}
-};
 
-$(document).ready(function() {
-	ko.applyBindings(viewModel);
-});
-viewModel.query.subscribe(viewModel.search);
-
-
-
-
+//empty array for infowindow contents
 var content = [];
-
+var markers = ko.observableArray();
 //create and set Google Map with marker
 function initialize() {
 	var mapCanvas = document.getElementById('map');
@@ -52,20 +26,31 @@ function initialize() {
 
 //loop through myPlaces array and place a marker and infowindow at each lat/long
 	for (i=0; i<myPlaces.length; i++) {
-		var marker = new google.maps.Marker({
+		markers[i] = new google.maps.Marker({
 			position: {lat: myPlaces[i].lat, lng:myPlaces[i].long},
 			map: map,
 			title: myPlaces[i].name,
 			animation: google.maps.Animation.DROP
 		}); //end marker
-		google.maps.event.addListener(marker, 'click', toggleBounce);
+		google.maps.event.addListener(markers[i], 'click', toggleBounce);
 		
+		var foursquareUrl = "https://api.foursquare.com/v2/venues/" + myPlaces[i].venueid + '&client_id=0J2DPJP1QTTH5Q5URVIY1BZOTVS5F01A3A41GW4NDHOJCCDH&client_secret=5RBWCXTH5414FN21DBJY1PIFM2TN3GAWRZ4WIWVRZRY1ZI1T&v=20151110';
+		$.ajax({
+			url: foursquareUrl,
+			dataType: 'json',
+			success: function(data){
+				console.log(data)
+			}
+
+		})
 		content.push('<div>'+ myPlaces[i].type + '</div>' + '<div>'+ myPlaces[i].summary+ '</div>' + '<div><a href='+ myPlaces[i].url+ '>' + myPlaces[i].url + '</a></div>');
-		attachWindow(marker, content[i]);
+		attachWindow(markers[i], content[i]);
+
+
 	} //end for loop
 } //end initialize
 
-//add infowindows
+//add infowindows and attach to corresponding marker
 function attachWindow(marker, contents) {
   var infowindow = new google.maps.InfoWindow({
     content: contents
@@ -76,7 +61,7 @@ function attachWindow(marker, contents) {
   });
 }
 
-//bounce markers on click 
+//bounce markers on click, end after 1.5sec
 function toggleBounce(marker) {
 	var self = this;
 	if(self.getAnimation() !== null) {
@@ -87,9 +72,34 @@ function toggleBounce(marker) {
 	}
 }
 
-
 //run initialize function for google map on window load
 google.maps.event.addDomListener(window, 'load', initialize);
 
+//create empty data array, apply Knockout.js
+var data = [];
+var viewModel = {
+	myPlaces: ko.observableArray(data),
+	query: ko.observable(''),
+	buttonClick: function() {
+		console.log('clicked');
+		var details = document.getElementById('details');
+		details.style.display='block';
+	},
+	search: function(value) {
+		viewModel.myPlaces.removeAll();
+		
+		for(var x in myPlaces) {
+			markers[x].setVisible(false);
+			if(myPlaces[x].name.toLowerCase().indexOf(value.toLowerCase()) >= 0){
+				viewModel.myPlaces.push(myPlaces[x]);
+				markers[x].setVisible(true);
+			}
+		}
+	}
+};
 
+$(document).ready(function() {
+	ko.applyBindings(viewModel);
+});
+viewModel.query.subscribe(viewModel.search);
 
