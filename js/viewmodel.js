@@ -7,13 +7,16 @@ $.getJSON("js/neighborhood.json", function(data) {
 	$.each(data, function(i) {
 		myPlaces.push(data[i]);
 	});
-	console.log(data);
+	console.log(myPlaces);
 }).fail(function() {console.log('error')})
 
 
 //empty array for infowindow contents
 var content = [];
-var markers = ko.observableArray();
+var markers = [];
+//empty array for foursquare response data
+var fourSquare = [];
+
 //create and set Google Map with marker
 function initialize() {
 	var mapCanvas = document.getElementById('map');
@@ -34,15 +37,19 @@ function initialize() {
 		}); //end marker
 		google.maps.event.addListener(markers[i], 'click', toggleBounce);
 		
-		var foursquareUrl = "https://api.foursquare.com/v2/venues/" + myPlaces[i].venueid + '&client_id=0J2DPJP1QTTH5Q5URVIY1BZOTVS5F01A3A41GW4NDHOJCCDH&client_secret=5RBWCXTH5414FN21DBJY1PIFM2TN3GAWRZ4WIWVRZRY1ZI1T&v=20151110';
+		//api call to foursquare
+		var foursquareUrl = "https://api.foursquare.com/v2/venues/" + myPlaces[i].venueid + '?client_id=0J2DPJP1QTTH5Q5URVIY1BZOTVS5F01A3A41GW4NDHOJCCDH&client_secret=5RBWCXTH5414FN21DBJY1PIFM2TN3GAWRZ4WIWVRZRY1ZI1T&v=20151110';	
 		$.ajax({
 			url: foursquareUrl,
+			data: data,
 			dataType: 'json',
 			success: function(data){
-				console.log(data)
+				// console.log(data);
+				fourSquare.push(data);
+				console.log(fourSquare);
 			}
-
-		})
+		})//end foursquare call
+		//push all infowindow contents to the contents array
 		content.push('<div>'+ myPlaces[i].type + '</div>' + '<div>'+ myPlaces[i].summary+ '</div>' + '<div><a href='+ myPlaces[i].url+ '>' + myPlaces[i].url + '</a></div>');
 		attachWindow(markers[i], content[i]);
 
@@ -83,7 +90,7 @@ var viewModel = {
 	buttonClick: function() {
 		console.log('clicked');
 		var details = document.getElementById('details');
-		details.style.display='block';
+		details.style.display ='block';
 	},
 	search: function(value) {
 		viewModel.myPlaces.removeAll();
