@@ -1,5 +1,8 @@
-//create empty array for storing neighborhood spots
-var myPlaces = new Array();
+
+var myPlaces = [];
+var content = [];
+var markers = [];
+var fourSquare = [];
 
 //load JSON neighborhood data from neighborhood.json in to empty myPlaces array
 $.getJSON("js/neighborhood.json", function(data) { 
@@ -10,15 +13,9 @@ $.getJSON("js/neighborhood.json", function(data) {
 	console.log(myPlaces);
 }).fail(function() {console.log('error')})
 
-
-//empty array for infowindow contents
-var content = [];
-var markers = [];
-//empty array for foursquare response data
-var fourSquare = [];
-
 //create and set Google Map with marker
 function initialize() {
+
 	var mapCanvas = document.getElementById('map');
 		var mapOptions = {
  		center: new google.maps.LatLng(41.924707, -87.700333),
@@ -36,7 +33,8 @@ function initialize() {
 			animation: google.maps.Animation.DROP
 		}); //end marker
 		google.maps.event.addListener(markers[i], 'click', toggleBounce);
-		
+
+
 		//api call to foursquare
 		var foursquareUrl = "https://api.foursquare.com/v2/venues/" + myPlaces[i].venueid + '?client_id=0J2DPJP1QTTH5Q5URVIY1BZOTVS5F01A3A41GW4NDHOJCCDH&client_secret=5RBWCXTH5414FN21DBJY1PIFM2TN3GAWRZ4WIWVRZRY1ZI1T&v=20151110';	
 		$.ajax({
@@ -46,23 +44,23 @@ function initialize() {
 			success: function(data){
 				// console.log(data);
 				fourSquare.push(data);
-				console.log(fourSquare);
+				// console.log(fourSquare);
 			}
 		})//end foursquare call
+		
 		//push all infowindow contents to the contents array
 		content.push('<div>'+ myPlaces[i].type + '</div>' + '<div>'+ myPlaces[i].summary+ '</div>' + '<div><a href='+ myPlaces[i].url+ '>' + myPlaces[i].url + '</a></div>');
 		attachWindow(markers[i], content[i]);
-
-
 	} //end for loop
-} //end initialize
 
+	// google.maps.event.addListener(button, 'click', toggleBounce);
+} //end initialize
+	
 //add infowindows and attach to corresponding marker
 function attachWindow(marker, contents) {
   var infowindow = new google.maps.InfoWindow({
     content: contents
   });
-
   marker.addListener('click', function() {
     infowindow.open(marker.get('map'), marker);
   });
@@ -104,6 +102,8 @@ var viewModel = {
 		}
 	}
 };
+
+
 
 $(document).ready(function() {
 	ko.applyBindings(viewModel);
