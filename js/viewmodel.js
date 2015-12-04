@@ -2,7 +2,8 @@
 var myPlaces = [];
 var content = [];
 var markers = [];
-var fourSquare = [];
+var fourSquarePhotos = [];
+var fourSquareLikes = [];
 
 //load JSON neighborhood data from neighborhood.json in to empty myPlaces array
 $.getJSON("js/neighborhood.json", function(data) { 
@@ -13,9 +14,10 @@ $.getJSON("js/neighborhood.json", function(data) {
 	console.log(myPlaces);
 }).fail(function() {console.log('error')})
 
+
+
 //create and set Google Map with marker
 function initialize() {
-
 	var mapCanvas = document.getElementById('map');
 		var mapOptions = {
  		center: new google.maps.LatLng(41.924707, -87.700333),
@@ -23,9 +25,8 @@ function initialize() {
   		mapTypeId: google.maps.MapTypeId.ROADMAP
 		}
 	var map = new google.maps.Map(mapCanvas, mapOptions)
-
 //loop through myPlaces array and place a marker and infowindow at each lat/long
-	for (i=0; i<myPlaces.length; i++) {
+	for (i=0; i< myPlaces.length; i++) {
 		markers[i] = new google.maps.Marker({
 			position: {lat: myPlaces[i].lat, lng:myPlaces[i].long},
 			map: map,
@@ -33,27 +34,22 @@ function initialize() {
 			animation: google.maps.Animation.DROP
 		}); //end marker
 		google.maps.event.addListener(markers[i], 'click', toggleBounce);
-
-
 		//api call to foursquare
 		var foursquareUrl = "https://api.foursquare.com/v2/venues/" + myPlaces[i].venueid + '?client_id=0J2DPJP1QTTH5Q5URVIY1BZOTVS5F01A3A41GW4NDHOJCCDH&client_secret=5RBWCXTH5414FN21DBJY1PIFM2TN3GAWRZ4WIWVRZRY1ZI1T&v=20151110';	
-		$.ajax({
-			url: foursquareUrl,
-			data: data,
-			dataType: 'json',
-			success: function(data){
-				// console.log(data);
-				fourSquare.push(data);
-				// console.log(fourSquare);
-			}
-		})//end foursquare call
-		
+		$.getJSON(foursquareUrl).done(function(data){
+			var photo = data.response.venue.bestPhoto.canonicalUrl;
+			console.log(data);
+			var likes = data.response.venue.likes.count;
+			var like = likes.toString();
+			fourSquarePhotos.push(photo);
+			fourSquareLikes.push(like);
+		})
+
 		//push all infowindow contents to the contents array
-		content.push('<div>'+ myPlaces[i].type + '</div>' + '<div>'+ myPlaces[i].summary+ '</div>' + '<div><a href='+ myPlaces[i].url+ '>' + myPlaces[i].url + '</a></div>');
+		content.push('<div>'+ myPlaces[i].type + '</div>' + '<div>'+ myPlaces[i].summary+ '</div>' + '<div><a href='+ myPlaces[i].url+ '>' + myPlaces[i].url + '</a></div>' + '<div>Likes ' + fourSquareLikes[i] + '</div><div><img src="' + fourSquarePhotos[i] + '"></div>');
 		attachWindow(markers[i], content[i]);
 	} //end for loop
-
-	// google.maps.event.addListener(button, 'click', toggleBounce);
+	google.maps.event.addListener(button, 'click', toggleBounce);
 } //end initialize
 	
 //add infowindows and attach to corresponding marker
@@ -67,7 +63,7 @@ function attachWindow(marker, contents) {
 }
 
 //bounce markers on click, end after 1.5sec
-function toggleBounce(marker) {
+var toggleBounce = function(marker) {
 	var self = this;
 	if(self.getAnimation() !== null) {
 		self.setAnimation(null);
@@ -83,12 +79,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
 //create empty data array, apply Knockout.js
 var data = [];
 var viewModel = {
+	markers: ko.observableArray(),
 	myPlaces: ko.observableArray(data),
 	query: ko.observable(''),
 	buttonClick: function() {
 		console.log('clicked');
-		var details = document.getElementById('details');
-		details.style.display ='block';
+		toggleBounce(markers);
 	},
 	search: function(value) {
 		viewModel.myPlaces.removeAll();
