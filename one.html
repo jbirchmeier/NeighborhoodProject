@@ -2,27 +2,30 @@
 <html>
 <head>
 	<link href="css/style.css" rel="stylesheet" type="text/css">
-	<script src="https://maps.googleapis.com/maps/api/js"></script>
-	<script type='text/javascript' src='knockout/dist/knockout.js'></script> 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script type='text/javascript' src='js/viewmodel.js'></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
 	</head>
-	<body>
-		<h1>Hellloooooo Logan Square</h1>
-		<div class='list'>
-			<input placeholder='search' type='search' data-bind="value: query, valueUpdate: 'keyup'" autocomplete='off'>
-			<ul data-bind="foreach: myPlaces">
-				<li id='button'>
+		<body>
+			<h1>Hellloooooo Logan Square</h1>
+			<div class='list'>
+				<input placeholder='search' type='search' data-bind="value: query, valueUpdate: 'keyup'" autocomplete='off'>
+				<ul data-bind="foreach: myPlaces">
 					<button data-bind="click: $parent.buttonClick" name='button' type='button'>
-						<p data-bind="text: name" class='name'>
-						<p data-bind="text: type" id='details'></p> 
-						<p data-bind="text: url" id='details'></p>
-						<p data-bind="text: summary" id='details'></p>
-					</button> 
-				</li>
-			</ul>
-		</div>
-		<div id='map'></div>
-	</body>
+						<li id='button'>
+						
+							<p data-bind="text: name" class='name'>
+							<p data-bind="text: type" id='details'></p> 
+							<p data-bind="text: url" id='details'></p>
+							<p data-bind="text: summary" id='details'></p>
+						
+					</li></button> 
+				</ul>
+			</div>
+			<div id='map'></div>
+			<script src="https://maps.googleapis.com/maps/api/js"></script>
+			<script src='knockout/dist/knockout.js'></script> 
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+			<script type='text/javascript' src='js/viewmodel.js'></script>
+		</body>
 
 </html>
