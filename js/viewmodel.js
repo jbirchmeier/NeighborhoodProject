@@ -73,17 +73,11 @@ function initialize() {
   		mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 	map = new google.maps.Map(mapCanvas, mapOptions);
+
+	ko.applyBindings(new ViewModel());
 }
 
-$.each(markers, function(place, value) {
-	place = new google.maps.Marker({
-		position: {lat: value.lat, lng:value.long},
-		map: map,
-		title: value.name,
-		animation: google.maps.Animation.DROP
-	}); //end marker
 
-});
 
 var fourSquareLikes = ko.observableArray();
 var fourSquareRating = ko.observableArray();
@@ -137,8 +131,42 @@ function Place(data) {
 }
 
 function ViewModel() {
+	"use strict";
 	var self = this;
-	
+	//this isn't working...why? says places not defined.
+	self.places = ko.observableArray([]);
+
+	markers.forEach(function(place) {
+		self.places.push(new Place(place));
+	})
+	var infowindow = new google.maps.InfoWindow();
+
+	var marker;
+
+	self.places().forEach(function(place){
+
+		marker = new google.maps.Marker({
+			position: {lat: places.lat(), lng:places.long()},
+			map: map,
+			title: places.name,
+			animation: google.maps.Animation.DROP
+		}); 
+
+
+
+	});
+
+	// $.each(markers, function(place, value) {
+	// marker = new google.maps.Marker({
+	// 	position: {lat: value.lat, lng:value.long},
+	// 	map: map,
+	// 	title: value.name,
+	// 	animation: google.maps.Animation.DROP
+	// }); //end marker
+
+
+
+
 
 };
 // $(document).ready(function() {
