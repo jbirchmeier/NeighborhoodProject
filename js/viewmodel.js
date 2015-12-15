@@ -78,33 +78,6 @@ function initialize() {
 }
 
 
-
-var fourSquareLikes = ko.observableArray();
-var fourSquareRating = ko.observableArray();
-for( i=0; i <markers.length; i++) {
-var foursquareUrl = "https://api.foursquare.com/v2/venues/" + markers[i].venueid + '?client_id=0J2DPJP1QTTH5Q5URVIY1BZOTVS5F01A3A41GW4NDHOJCCDH&client_secret=5RBWCXTH5414FN21DBJY1PIFM2TN3GAWRZ4WIWVRZRY1ZI1T&v=20151110';
-
-//api call to foursquare
-//include likes/rating in list view; open when clicked
-$.ajax({
-	url: foursquareUrl,
-	dataType: "json",
-	success: function(data){
-		var result = data.response.venue;
-		var rating = result.rating;
-		fourSquareRating.push(rating);
-		var likes = result.likes.count;
-		var like = likes.toString();
-		// fourSquarePhotos.push(photo);
-		fourSquareLikes.push(like);
-		console.log(fourSquareLikes());
-		console.log(fourSquareRating());
-	},
-	error: function(){
-	console.log('error');
-	}
-});
-}
 //bounce markers on click, end after 1.5sec
 var toggleBounce = function(marker) {
 	var self = this;
@@ -128,17 +101,21 @@ function Place(data) {
 	this.url = ko.observable(data.url);
 	this.lat = ko.observable(data.lat);
 	this.long = ko.observable(data.long);
+	this.venueid = ko.observable(data.venueid);
+	this.likes = ko.observable('');
+	this.rating = ko.observable('');
+	this.marker = ko.observable();
 }
 
 function ViewModel() {
 	"use strict";
 	var self = this;
 	//this isn't working...why? says places not defined.
-	self.places = ko.observableArray([]);
+	this.places = ko.observableArray([]);
 
-	markers.forEach(function(place) {
+	markers.forEach(function (place) {
 		self.places.push(new Place(place));
-	})
+	});
 	var infowindow = new google.maps.InfoWindow();
 
 	var marker;
@@ -146,15 +123,70 @@ function ViewModel() {
 	self.places().forEach(function(place){
 
 		marker = new google.maps.Marker({
-			position: {lat: places.lat(), lng:places.long()},
+			position: {lat: place.lat(), lng:place.long()},
 			map: map,
-			title: places.name,
+			title: place.name(),
 			animation: google.maps.Animation.DROP
 		}); 
+		place.marker = marker;
+ 		// Make AJAX request to Foursquare
+        $.ajax({
+            url: "https://api.foursquare.com/v2/venues/" + place.venueid() + '?client_id=0J2DPJP1QTTH5Q5URVIY1BZOTVS5F01A3A41GW4NDHOJCCDH&client_secret=5RBWCXTH5414FN21DBJY1PIFM2TN3GAWRZ4WIWVRZRY1ZI1T&v=20151110',
+            dataType: "json",
+            success: function (data) {
+                // Make results easier to handle
 
+                var result = data.response.venue;
 
+                //verify that foursquare property exists; credit "https://discussions.udacity.com/t/foursquare-results-undefined-until-the-second-click-on-infowindow/39673/12"
+                var likes = result.hasOwnProperty('likes') ? result.likes : '';
+                place.likes(likes || '');
 
-	});
+                var rating = result.hasOwnProperty('rating') ? result.rating : '';
+                place.rating(rating || '');
+
+                // Infowindow code is in the success function so that the error message
+                // displayed in infowindow works properly, instead of a mangled infowindow
+                // Credit https://discussions.udacity.com/t/trouble-with-infowindows-and-contentstring/39853/14
+
+                // Content of the infowindow
+                var contentString = '<div>'+ place.type() + '</div>' + '<div>'+ place.summary() + '</div>' + '<div><a href='+ place.url() + '>' + place.url() + '</a></div>' + '<div>Likes ' + place.likes() + '</div>';
+                
+                // Add infowindows credit http://you.arenot.me/2010/06/29/google-maps-api-v3-0-multiple-markers-multiple-infowindows/
+                google.maps.event.addListener(place.marker, 'click', function () {
+                    infowindow.open(map, this);
+                    // Bounce animation credit https://github.com/Pooja0131/FEND-Neighbourhood-Project5a/blob/master/js/app.js
+                    place.marker.setAnimation(google.maps.Animation.BOUNCE);
+                    setTimeout(function () {
+                        place.marker.setAnimation(null);
+                    }, 500);
+                    infowindow.setContent(contentString);
+                });
+            },
+            // Alert the user on error. Set messages in the DOM and infowindow
+            error: function (e) {
+                infowindow.setContent('<h5>Foursquare data is unavailable. Please try refreshing later.</h5>');
+                document.getElementById("error").innerHTML = "<h4>Foursquare data is unavailable. Please try refreshing later.</h4>";
+            }
+        });
+
+        // This event listener makes the error message on AJAX error display in the infowindow
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.open(map, this);
+            place.marker.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function () {
+                place.marker.setAnimation(null);
+            }, 500);
+        });
+    });
+    
+    // Activate the appropriate marker when the user clicks a list item
+    self.showInfo = function (place) {
+        google.maps.event.trigger(place.marker, 'click');
+        //self.hideElements();
+    };
+
+};
 
 	// $.each(markers, function(place, value) {
 	// marker = new google.maps.Marker({
@@ -168,7 +200,4 @@ function ViewModel() {
 
 
 
-};
-// $(document).ready(function() {
-// ko.applyBindings(new ViewModel());
-// });
+

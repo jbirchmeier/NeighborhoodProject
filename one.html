@@ -8,17 +8,11 @@
 		<body>
 			<h1>Hellloooooo Logan Square</h1>
 			<div class='list'>
-				<input placeholder='search' type='search' data-bind="value: query, valueUpdate: 'keyup'" autocomplete='off'>
-				<ul data-bind="foreach: myPlaces">
-					<button data-bind="click: $parent.buttonClick" name='button' type='button'>
-						<li id='button'>
-						
-							<p data-bind="text: name" class='name'>
-							<p data-bind="text: type" id='details'></p> 
-							<p data-bind="text: url" id='details'></p>
-							<p data-bind="text: summary" id='details'></p>
-						
-					</li></button> 
+				<input> 
+				<!-- placeholder='search' type='search' data-bind="value: query, valueUpdate: 'keyup'" autocomplete='off' -->
+				<ul data-bind="foreach: places">
+						<button type="button"><li data-bind="text: name, click: $parent.showInfo" class='name'>
+					</li></button>
 				</ul>
 			</div>
 			<div id='map'></div>
