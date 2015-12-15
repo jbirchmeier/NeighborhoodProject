@@ -50,7 +50,7 @@ var markers = [{
 	"type": "Bars & Restaurants",
 	"lat": 41.924696,
 	"long": -87.713212,
-	"summary": "This Logan Square bar has everything you could ask for—just don’t ask for too much. The spare, dim room has plenty of hipster atmosphere (but no hipster snobbery); ample seating at the full bar; delicious beers on tap; and occasional DJ sets from local and touring musicians.",
+	"summary": "This Logan Square bar has everything you could ask for, just don’t ask for too much. The spare, dim room has plenty of hipster atmosphere (but no hipster snobbery); ample seating at the full bar; delicious beers on tap; and occasional DJ sets from local and touring musicians.",
 	"url": "http://www.theburlingtonbar.com/",
 	"venueid":"4b12d1b2f964a520be8e23e3"
 },
@@ -140,7 +140,7 @@ function ViewModel() {
 
                 //verify that foursquare property exists; credit "https://discussions.udacity.com/t/foursquare-results-undefined-until-the-second-click-on-infowindow/39673/12"
                 var likes = result.hasOwnProperty('likes') ? result.likes : '';
-                place.likes(likes || '');
+                place.likes(likes.count || '');
 
                 var rating = result.hasOwnProperty('rating') ? result.rating : '';
                 place.rating(rating || '');
@@ -150,7 +150,7 @@ function ViewModel() {
                 // Credit https://discussions.udacity.com/t/trouble-with-infowindows-and-contentstring/39853/14
 
                 // Content of the infowindow
-                var contentString = '<div>'+ place.type() + '</div>' + '<div>'+ place.summary() + '</div>' + '<div><a href='+ place.url() + '>' + place.url() + '</a></div>' + '<div>Likes ' + place.likes() + '</div>';
+                var contentString = '<div>'+ place.type() + '</div>' + '<div>'+ place.summary() + '</div>' + '<div><a href='+ place.url() + '>' + place.url() + '</a></div>' + '<div>Likes: ' + place.likes() + '</div><div>Rating: ' + place.rating() + '</div>';
                 
                 // Add infowindows credit http://you.arenot.me/2010/06/29/google-maps-api-v3-0-multiple-markers-multiple-infowindows/
                 google.maps.event.addListener(place.marker, 'click', function () {
@@ -185,6 +185,30 @@ function ViewModel() {
         google.maps.event.trigger(place.marker, 'click');
         //self.hideElements();
     };
+
+    self.input = ko.observable('');
+    self.visiblePlaces = ko.observableArray();
+    self.places().forEach(function (place) {
+    	self.visiblePlaces.push(place);
+    });
+
+
+    //need to hide list items too...
+    self.search = function() {
+		self.visiblePlaces.removeAll();
+
+		self.places().forEach(function (place){
+			place.marker.setVisible(false);
+			if(place.name().toLowerCase().indexOf(self.input().toLowerCase()) >= 0){
+				self.visiblePlaces.push(place);
+				place.marker.setVisible(true);
+			}
+		});
+
+		self.visiblePlaces().forEach(function(place) {
+			place.marker.setVisible(true);
+		})	
+	}
 
 };
 

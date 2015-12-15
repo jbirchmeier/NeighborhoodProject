@@ -8,8 +8,7 @@
 		<body>
 			<h1>Hellloooooo Logan Square</h1>
 			<div class='list'>
-				<input> 
-				<!-- placeholder='search' type='search' data-bind="value: query, valueUpdate: 'keyup'" autocomplete='off' -->
+				<input id="search" placeholder="Search by name" data-bind="textInput: input, event: {keyup: search}">
 				<ul data-bind="foreach: places">
 						<button type="button"><li data-bind="text: name, click: $parent.showInfo" class='name'>
 					</li></button>
