@@ -1,12 +1,21 @@
 
 body {
-	max-width: 90%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 400;
 }
+#map {
+	height: 100%;
+	overflow: visible;
+}
+
 
 .list {
 	float: left;
 	display: block;
-	width: 30em;
+	width: 30%;
 }
 
 ul {
@@ -14,15 +23,15 @@ ul {
 	display: block;
 }
 button {
-	width: 20em;
-	text-align: left;
+	width: 100%;
+	text-align: center;
+	font-size: 1em;
+	color: white;
+	border: solid 1px #ffffff;
+	background-color: #000000;
 }
 
 #details {
 	display: none;
-}
-#map {
-	width: 500px;
-	height: 500px;
 }
 
