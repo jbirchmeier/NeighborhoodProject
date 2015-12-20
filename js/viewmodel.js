@@ -111,7 +111,7 @@ function Place(data) {
 function ViewModel() {
 	"use strict";
 	var self = this;
-	//this isn't working...why? says places not defined.
+
 	this.places = ko.observableArray([]);
 
 	markers.forEach(function (place) {
@@ -135,8 +135,7 @@ function ViewModel() {
             url: "https://api.foursquare.com/v2/venues/" + place.venueid() + '?client_id=0J2DPJP1QTTH5Q5URVIY1BZOTVS5F01A3A41GW4NDHOJCCDH&client_secret=5RBWCXTH5414FN21DBJY1PIFM2TN3GAWRZ4WIWVRZRY1ZI1T&v=20151110',
             dataType: "json",
             success: function (data) {
-                // Make results easier to handle
-
+            	//store results to make displaying easier
                 var result = data.response.venue;
 
                 //verify that foursquare property exists; credit "https://discussions.udacity.com/t/foursquare-results-undefined-until-the-second-click-on-infowindow/39673/12"
@@ -150,13 +149,12 @@ function ViewModel() {
                 // displayed in infowindow works properly, instead of a mangled infowindow
                 // Credit https://discussions.udacity.com/t/trouble-with-infowindows-and-contentstring/39853/14
 
-                // Content of the infowindow
+                // set infowindow content
                 var contentString = '<div>'+ place.type() + '</div>' + '<div>'+ place.summary() + '</div>' + '<div><a href='+ place.url() + '>' + place.url() + '</a></div>' + '<div>Likes: ' + place.likes() + '</div><div>Rating: ' + place.rating() + '</div>';
                 
-                // Add infowindows credit http://you.arenot.me/2010/06/29/google-maps-api-v3-0-multiple-markers-multiple-infowindows/
+                // Add infowindows to markers
                 google.maps.event.addListener(place.marker, 'click', function () {
                     infowindow.open(map, this);
-                    // Bounce animation credit https://github.com/Pooja0131/FEND-Neighbourhood-Project5a/blob/master/js/app.js
                     place.marker.setAnimation(google.maps.Animation.BOUNCE);
                     setTimeout(function () {
                         place.marker.setAnimation(null);
@@ -212,14 +210,6 @@ function ViewModel() {
 	}
 
 };
-
-	// $.each(markers, function(place, value) {
-	// marker = new google.maps.Marker({
-	// 	position: {lat: value.lat, lng:value.long},
-	// 	map: map,
-	// 	title: value.name,
-	// 	animation: google.maps.Animation.DROP
-	// }); //end marker
 
 
 
