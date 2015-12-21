@@ -5,20 +5,28 @@
 	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-	<body>
-		<div id = "error"></div>
-		<div id='map'></div>
-		<div class='list'>
-			<input id="search" placeholder="Search by name" data-bind="textInput: input, event: {keyup: search}">
-			<ul data-bind="foreach: visiblePlaces">
-				<button type="button"><li data-bind="text: name, click: $parent.showInfo" class='name'>
-				</li></button>
-			</ul>
-		</div>
-		<script src="https://maps.googleapis.com/maps/api/js"></script>
-		<script src='knockout/knockout.js'></script> 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<script type='text/javascript' src='js/viewmodel.js'></script>
-	</body>
+		<body>
+			<div id = "error"></div>
+			<div id='map'></div>
+			<div class='list'>
+				<input id="search" placeholder="Search by name" data-bind="textInput: input, event: {keyup: search}">
+				<div class="menu-btn" id="menu-btn">
+					 <div></div>
+					 <span></span>
+					 <span></span>
+					 <span></span>
+				</div>
+				<div class = 'responsive-menu'>
+					<ul data-bind="foreach: visiblePlaces">
+						<button type="button"><li data-bind="text: name, click: $parent.showInfo" class='name'>
+						</li></button>
+					</ul>
+				</div>
+			</div>
+			<script src="https://maps.googleapis.com/maps/api/js"></script>
+			<script src='knockout/knockout.js'></script> 
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+			<script type='text/javascript' src='js/viewmodel.js'></script>
+		</body>
 
 </html>

@@ -1,4 +1,4 @@
-
+//my list of places...please add your favorite Logan Square establishment with foursquare venueid!
 var markers = [{
 	"name": "Wolfbait & B-Girls",
 	"type": "Shopping",
@@ -64,6 +64,7 @@ var markers = [{
 	"venueid":"4bb2879814cfd13a731415ab"
 }];
 
+//create google map and apply knockout bindings
 var map;
 function initialize() {
 	var mapCanvas = document.getElementById('map');
@@ -79,14 +80,14 @@ function initialize() {
 }
 
 
-//bounce markers on click, end after 1.5sec
+//bounce markers on click, end after 3.5sec
 var toggleBounce = function(marker) {
 	var self = this;
 	if(self.getAnimation() !== null) {
 		self.setAnimation(null);
 	} else {
 		self.setAnimation(google.maps.Animation.BOUNCE);
-		setTimeout(function(){self.setAnimation(null); }, 1500);
+		setTimeout(function(){self.setAnimation(null); }, 3500);
 	}
 }
 
@@ -95,6 +96,7 @@ var toggleBounce = function(marker) {
 //run initialize function for google map on window load
 google.maps.event.addDomListener(window, 'load', initialize);
 
+//create Place class
 function Place(data) {
 	this.name = ko.observable(data.name);;
 	this.summary = ko.observable(data.summary);
@@ -108,19 +110,23 @@ function Place(data) {
 	this.marker = ko.observable();
 }
 
+//viewModel - all items that are part of the app's UI
 function ViewModel() {
 	"use strict";
 	var self = this;
-
+	//create observable array of all my places to use with knockout features
 	this.places = ko.observableArray([]);
 
+	//for every marker object, add new place based on Place class
 	markers.forEach(function (place) {
 		self.places.push(new Place(place));
 	});
+	//establish infowindows
 	var infowindow = new google.maps.InfoWindow();
 
 	var marker;
 
+	//create map markers, call foursquare api, 
 	self.places().forEach(function(place){
 
 		marker = new google.maps.Marker({
@@ -146,8 +152,8 @@ function ViewModel() {
                 place.rating(rating || '');
 
                 // Infowindow code is in the success function so that the error message
-                // displayed in infowindow works properly, instead of a mangled infowindow
-                // Credit https://discussions.udacity.com/t/trouble-with-infowindows-and-contentstring/39853/14
+                // displayed in infowindow works properly
+                // found at: https://discussions.udacity.com/t/trouble-with-infowindows-and-contentstring/39853/14
 
                 // set infowindow content
                 var contentString = '<div>'+ place.type() + '</div>' + '<div>'+ place.summary() + '</div>' + '<div><a href='+ place.url() + '>' + place.url() + '</a></div>' + '<div>Likes: ' + place.likes() + '</div><div>Rating: ' + place.rating() + '</div>';
@@ -169,7 +175,7 @@ function ViewModel() {
             }
         });
 
-        // This event listener makes the error message on AJAX error display in the infowindow
+        // make the error message on AJAX error display in the infowindow
         google.maps.event.addListener(marker, 'click', function () {
             infowindow.open(map, this);
             place.marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -182,7 +188,6 @@ function ViewModel() {
     // Activate the appropriate marker when the user clicks a list item
     self.showInfo = function (place) {
         google.maps.event.trigger(place.marker, 'click');
-        //self.hideElements();
     };
 
     self.input = ko.observable('');
@@ -207,7 +212,13 @@ function ViewModel() {
 		self.visiblePlaces().forEach(function(place) {
 			place.marker.setVisible(true);
 		})	
-	}
+	};
+
+	(function($){
+    	$('.menu-btn').click(function(){
+    	     $('.responsive-menu').toggleClass('expand');
+    	})
+    })(jQuery);
 
 };
 
