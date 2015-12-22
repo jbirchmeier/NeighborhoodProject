@@ -89,7 +89,7 @@ var toggleBounce = function(marker) {
 		self.setAnimation(google.maps.Animation.BOUNCE);
 		setTimeout(function(){self.setAnimation(null); }, 3500);
 	}
-}
+};
 
 
 
@@ -98,7 +98,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 //create Place class
 function Place(data) {
-	this.name = ko.observable(data.name);;
+	this.name = ko.observable(data.name);
 	this.summary = ko.observable(data.summary);
 	this.type = ko.observable(data.type);
 	this.url = ko.observable(data.url);
@@ -197,7 +197,7 @@ function ViewModel() {
     });
 
 
-    //need to hide list items too...
+    //function to filter list and markers
     self.search = function() {
 		self.visiblePlaces.removeAll();
 
@@ -211,17 +211,16 @@ function ViewModel() {
 
 		self.visiblePlaces().forEach(function(place) {
 			place.marker.setVisible(true);
-		})	
+		})	;
 	};
 
 	(function($){
     	$('.menu-btn').click(function(){
     	     $('.responsive-menu').toggleClass('expand');
-    	})
+    	});
     })(jQuery);
 
-};
-
+}
 
 
 
