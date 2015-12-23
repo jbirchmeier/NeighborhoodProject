@@ -69,7 +69,7 @@ var map;
 function initialize() {
 	var mapCanvas = document.getElementById('map');
 		var mapOptions = {
- 		center: new google.maps.LatLng(41.924707, -87.700333),
+ 		center: new google.maps.LatLng(41.925061, -87.710989),
   		zoom: 14,
   		disableDefaultUI: true,
   		mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -122,7 +122,10 @@ function ViewModel() {
 		self.places.push(new Place(place));
 	});
 	//establish infowindows
-	var infowindow = new google.maps.InfoWindow();
+	var infowindow = new google.maps.InfoWindow({
+		maxWidth: 200, 
+		zIndex: 200
+	});
 
 	var marker;
 
@@ -181,7 +184,7 @@ function ViewModel() {
             place.marker.setAnimation(google.maps.Animation.BOUNCE);
             setTimeout(function () {
                 place.marker.setAnimation(null);
-            }, 500);
+            }, 3500);
         });
     });
     
@@ -203,6 +206,7 @@ function ViewModel() {
 
 		self.places().forEach(function (place){
 			place.marker.setVisible(false);
+			infowindow.close();
 			if(place.name().toLowerCase().indexOf(self.input().toLowerCase()) >= 0){
 				self.visiblePlaces.push(place);
 				place.marker.setVisible(true);
