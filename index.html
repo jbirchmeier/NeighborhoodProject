@@ -16,7 +16,7 @@
 					 <span></span>
 					 <span></span>
 				</div>
-				<div class = 'responsive-menu'>
+				<div class = 'responsive-menu' data-bind='click: clickToggle'>
 					<ul data-bind="foreach: visiblePlaces">
 						<button type="button"><li data-bind="text: name, click: $parent.showInfo" class='name'>
 						</li></button>

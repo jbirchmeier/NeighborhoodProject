@@ -218,11 +218,14 @@ function ViewModel() {
 		})	;
 	};
 
-	(function($){
-    	$('.menu-btn').click(function(){
-    	     $('.responsive-menu').toggleClass('expand');
-    	});
-    })(jQuery);
+	// (function($){
+ //    	$('.menu-btn').click(function(){
+ //    	     $('.responsive-menu').toggleClass('expand');
+ //    	});
+ //    })(jQuery);
+	self.clickToggle = function() {
+		$('.responsive-menu').toggleClass('expand');
+	}
 
 }
 
