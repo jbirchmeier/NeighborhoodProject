@@ -218,14 +218,14 @@ function ViewModel() {
 		})	;
 	};
 
-	// (function($){
- //    	$('.menu-btn').click(function(){
- //    	     $('.responsive-menu').toggleClass('expand');
- //    	});
- //    })(jQuery);
+	//sets slider menu default to display: none on small screens
+	self.isTrue = ko.observable(false);
+
+	//on menu button click, toggle expand class to open the slider menu with locations
 	self.clickToggle = function() {
-		$('.responsive-menu').toggleClass('expand');
-	}
+		console.log('click');
+		self.isTrue(!self.isTrue());
+	};
 
 }
 

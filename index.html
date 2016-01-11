@@ -10,13 +10,13 @@
 			<div id='map'></div>
 			<div class='list'>
 				<input id="search" placeholder="Search by name" data-bind="textInput: input, event: {keyup: search}">
-				<div class="menu-btn" id="menu-btn">
+				<div class="menu-btn" id="menu-btn" data-bind='click: clickToggle'>
 					 <div></div>
 					 <span></span>
 					 <span></span>
 					 <span></span>
 				</div>
-				<div class = 'responsive-menu' data-bind='click: clickToggle'>
+				<div class = 'responsive-menu' data-bind='css: {expand: isTrue}'>
 					<ul data-bind="foreach: visiblePlaces">
 						<button type="button"><li data-bind="text: name, click: $parent.showInfo" class='name'>
 						</li></button>
